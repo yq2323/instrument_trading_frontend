@@ -1,0 +1,15 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
+Flask-CORS
+Flask-Mail
+Werkzeug
+Jinja2
+WTForms
+email-validator
+PyMySQL
+Pillow
+python-dotenv
+bcrypt
+itsdangerous

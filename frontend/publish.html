@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发布乐器 - 校园二手乐器交易平台</title>
+    
+    <!-- CSS样式 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    
+    <style>
+        /* 发布页特有样式 */
+        .publish-container {
+            padding: 40px 0;
+            min-height: 80vh;
+            background: #f8f9fa;
+        }
+        
+        .publish-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .publish-header h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .publish-header p {
+            color: #666;
+            font-size: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .publish-form {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            padding: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .publish-form {
+                padding: 20px;
+            }
+        }
+        
+        .form-section {
+            margin-bottom: 40px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-title i {
+            color: #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .form-group label.required::after {
+            content: ' *';
+            color: #e74c3c;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-control.textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .price-input {
+            position: relative;
+        }
+        
+        .price-input::before {
+            content: '¥';
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            z-index: 1;
+        }
+        
+        .price-input input {
+            padding-left: 30px;
+        }
+        
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .radio-label:hover {
+            border-color: #667eea;
+        }
+        
+        .radio-label input {
+            margin: 0;
+            cursor: pointer;
+        }
+        
+        .radio-label.checked {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        /* 图片上传样式 */
+        .upload-area {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .upload-area:hover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .upload-text h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .upload-text p {
+            margin: 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            background: #5a6fd8;
+        }
+        
+        .upload-btn input[type="file"] {
+            display: none;
+        }
+        
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            height: 120px;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .preview-btn {
+            width: 30px;
+            height: 30px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        .preview-btn:hover {
+            background: rgba(0,0,0,0.8);
+        }
+        
+        .preview-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .main-badge {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: #2ecc71;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        /* 音频上传样式 */
+        .audio-upload {
+            margin-top: 15px;
+        }
+        
+        .audio-preview {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        
+        .audio-preview.active {
+            display: block;
+        }
+        
+        .audio-preview audio {
+            width: 100%;
+        }
+        
+        /* 提交按钮 */
+        .submit-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .submit-btn {
+            padding: 15px 40px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+            justify-content: center;
+        }
+        
+        .submit-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .tips-section {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .tips-section h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+        
+        .tips-section ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #666;
+        }
+        
+        .tips-section li {
+            margin-bottom: 8px;
+        }
+        
+        /* 错误提示 */
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .success-message {
+            color: #2ecc71;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        /* 地图选择器 */
+        .map-selector {
+            margin-top: 15px;
+        }
+        
+        .map-container {
+            height: 200px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .location-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .location-input input {
+            flex: 1;
+        }
+        
+        .location-input button {
+            padding: 0 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .location-input button:hover {
+            background: #5a6fd8;
+        }
+        
+        /* 加载状态 */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .loading .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 编辑器工具栏 */
+        .editor-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .editor-btn {
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .editor-btn:hover {
+            background: #e9ecef;
+        }
+        
+        .counter {
+            text-align: right;
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-guitar"></i>
+                <span>校园乐器汇</span>
+            </a>
+            
+            <div class="nav-menu">
+                <a href="index.html">
+                    <i class="fas fa-home"></i> 首页
+                </a>
+                <a href="publish.html" class="active">
+                    <i class="fas fa-plus-circle"></i> 发布
+                </a>
+                <a href="cart.html" id="cartLink">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span> 购物车
+                </a>
+                
+                <div class="user-dropdown">
+                    <button class="user-btn" id="userBtn">
+                        <i class="fas fa-user"></i>
+                        <span id="username">未登录</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="userMenu">
+                        <a href="user.html">
+                            <i class="fas fa-user-circle"></i> 个人中心
+                        </a>
+                        <a href="user.html#my-instruments">
+                            <i class="fas fa-music"></i> 我的发布
+                        </a>
+                        <div class="divider"></div>
+                        <a href="#" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> 退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.html" class="btn btn-outline">登录</a>
+                    <a href="register.html" class="btn btn-primary">注册</a>
+                </div>
+            </div>
+            
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" id="closeMenu">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="mobile-nav">
+            <a href="index.html"><i class="fas fa-home"></i> 首页</a>
+            <a href="publish.html"><i class="fas fa-plus-circle"></i> 发布</a>
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i> 购物车</a>
+            <a href="user.html"><i class="fas fa-user"></i> 个人中心</a>
+            <div class="divider"></div>
+            <a href="login.html" class="btn btn-outline">登录</a>
+            <a href="register.html" class="btn btn-primary">注册</a>
+        </div>
+    </div>
+
+    <!-- 发布内容 -->
+    <main class="publish-container">
+        <div class="container">
+            <div class="publish-header">
+                <h1>发布你的乐器</h1>
+                <p>填写乐器信息，让更多人看到你的宝贝</p>
+            </div>
+            
+            <form id="publishForm" enctype="multipart/form-data">
+                <!-- 基本信息 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-info-circle"></i> 基本信息
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="title" class="required">乐器标题</label>
+                        <input type="text" id="title" name="title" class="form-control" 
+                               placeholder="例如：雅马哈FG800民谣吉他" required maxlength="100">
+                        <div class="counter" id="titleCounter">0/100</div>
+                        <div class="error-message" id="titleError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category_id" class="required">乐器分类</label>
+                        <select id="category_id" name="category_id" class="form-control" required>
+                            <option value="">请选择分类</option>
+                            <!-- 分类将通过JS动态加载 -->
+                        </select>
+                        <div class="error-message" id="categoryError"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description" class="required">乐器描述</label>
+                        <div class="editor-toolbar">
+                            <button type="button" class="editor-btn" onclick="formatText('bold')">
+                                <i class="fas fa-bold"></i>
+                            </button>
+                            <button type="button" class="editor-btn" onclick="formatText('italic')">
+                                <i class="fas fa-italic"></i>
+                            </button>
+                            <button type="button" class="editor-btn" onclick="formatText('underline')">
+                                <i class="fas fa-underline"></i>
+                            </button>
+                            <button type="button" class="editor-btn" onclick="insertBullet()">
+                                <i class="fas fa-list-ul"></i>
+                            </button>
+                        </div>
+                        <textarea id="description" name="description" class="form-control textarea" 
+                                  placeholder="请详细描述乐器的状况、特点、包含的配件等..." 
+                                  required maxlength="2000"></textarea>
+                        <div class="counter" id="descriptionCounter">0/2000</div>
+                        <div class="error-message" id="descriptionError"></div>
+                    </div>
+                </div>
+                
+                <!-- 价格信息 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-tag"></i> 价格信息
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price" class="required">出售价格</label>
+                            <div class="price-input">
+                                <input type="number" id="price" name="price" class="form-control" 
+                                       min="0" step="0.01" placeholder="0.00" required>
+                            </div>
+                            <div class="error-message" id="priceError"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="original_price">原价</label>
+                            <div class="price-input">
+                                <input type="number" id="original_price" name="original_price" class="form-control" 
+                                       min="0" step="0.01" placeholder="0.00">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 乐器详情 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-music"></i> 乐器详情
+                    </h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="brand">品牌</label>
+                            <input type="text" id="brand" name="brand" class="form-control" 
+                                   placeholder="例如：Yamaha、Fender" maxlength="50">
+                            <div class="counter" id="brandCounter">0/50</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="model">型号</label>
+                            <input type="text" id="model" name="model" class="form-control" 
+                                   placeholder="例如：FG800、Stratocaster" maxlength="50">
+                            <div class="counter" id="modelCounter">0/50</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">成色状况</label>
+                        <div class="radio-group" id="conditionGroup">
+                            <label class="radio-label" data-value="new">
+                                <input type="radio" name="condition" value="new" required>
+                                <span>全新</span>
+                            </label>
+                            <label class="radio-label" data-value="like_new">
+                                <input type="radio" name="condition" value="like_new">
+                                <span>几乎全新</span>
+                            </label>
+                            <label class="radio-label" data-value="good">
+                                <input type="radio" name="condition" value="good">
+                                <span>良好</span>
+                            </label>
+                            <label class="radio-label" data-value="fair">
+                                <input type="radio" name="condition" value="fair">
+                                <span>一般</span>
+                            </label>
+                            <label class="radio-label" data-value="poor">
+                                <input type="radio" name="condition" value="poor">
+                                <span>较差</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="conditionError"></div>
+                    </div>
+                </div>
+                
+                <!-- 图片上传 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-images"></i> 上传图片
+                        <small style="font-size: 14px; color: #666; font-weight: normal; margin-left: 10px;">
+                            （建议上传3-5张清晰图片）
+                        </small>
+                    </h3>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h4>点击或拖拽上传图片</h4>
+                            <p>支持 JPG、PNG 格式，单张图片不超过 5MB</p>
+                            <label class="upload-btn">
+                                选择图片
+                                <input type="file" id="images" name="images" accept="image/*" multiple>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="image-preview" id="imagePreview"></div>
+                    <input type="hidden" id="main_image_index" name="main_image_index" value="0">
+                    <div class="error-message" id="imagesError"></div>
+                </div>
+                
+                <!-- 音频试听 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-headphones"></i> 音频试听
+                        <small style="font-size: 14px; color: #666; font-weight: normal; margin-left: 10px;">
+                            （可选，让买家了解乐器音色）
+                        </small>
+                    </h3>
+                    
+                    <div class="upload-area" id="audioUploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-audio"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h4>上传试听音频</h4>
+                            <p>支持 MP3、WAV 格式，文件不超过 10MB</p>
+                            <label class="upload-btn">
+                                选择音频
+                                <input type="file" id="audio" name="audio" accept="audio/*">
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="audio-preview" id="audioPreview">
+                        <audio controls id="audioPlayer"></audio>
+                    </div>
+                    <div class="error-message" id="audioError"></div>
+                </div>
+                
+                <!-- 交易信息 -->
+                <div class="form-section">
+                    <h3 class="section-title">
+                        <i class="fas fa-map-marker-alt"></i> 交易信息
+                    </h3>
+                    
+                    <div class="form-group">
+                        <label for="location">交易地点</label>
+                        <input type="text" id="location" name="location" class="form-control" 
+                               placeholder="例如：XX大学学生活动中心、图书馆前" maxlength="200">
+                        <div class="counter" id="locationCounter">0/200</div>
+                        <div class="error-message" id="locationError"></div>
+                    </div>
+                    
+                    <div class="map-selector">
+                        <div class="map-container" id="mapContainer">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>地图定位功能正在开发中</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 提交区域 -->
+                <div class="submit-section">
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        <span id="submitText">发布乐器</span>
+                        <span id="submitLoading" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i> 发布中...
+                        </span>
+                    </button>
+                    
+                    <div class="tips-section">
+                        <h4>📝 发布提示：</h4>
+                        <ul>
+                            <li><strong>标题要吸引人</strong>：包含品牌、型号和关键特点</li>
+                            <li><strong>图片要清晰</strong>：多角度拍摄，展示细节和瑕疵</li>
+                            <li><strong>描述要详细</strong>：说明使用情况、包含配件、有无维修史</li>
+                            <li><strong>价格要合理</strong>：参考市场价，可接受适当议价</li>
+                            <li><strong>地点要明确</strong>：选择安全的公共场合进行交易</li>
+                        </ul>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>校园乐器汇</h3>
+                    <p>专注于校园二手乐器交易，让音乐传递更远</p>
+                </div>
+                <div class="footer-section">
+                    <h4>发布指南</h4>
+                    <ul>
+                        <li><a href="#">发布规则</a></li>
+                        <li><a href="#">定价建议</a></li>
+                        <li><a href="#">图片要求</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <p>课程项目 - 软件工程</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+    
+    <script>
+        // 设置API基础URL
+        // API基础URL已在config.js中定义
+        
+        // 全局变量
+        let uploadedImages = [];
+        let uploadedAudio = null;
+        let mainImageIndex = 0;
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            checkAuthStatus();
+            
+            // 加载分类
+            loadCategories();
+            
+            // 绑定事件
+            bindEvents();
+            
+            // 初始化表单
+            initForm();
+            
+            // 检查是否编辑模式
+            checkEditMode();
+        });
+        
+        // 检查登录状态
+        async function checkAuthStatus() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}/auth/check_auth`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                
+                if (!data.authenticated) {
+                    // 未登录，跳转到登录页
+                    showNotification('请先登录才能发布乐器', 'warning');
+                    setTimeout(() => {
+                        sessionStorage.setItem('redirectUrl', 'publish.html');
+                        window.location.href = 'login.html';
+                    }, 1500);
+                    return false;
+                }
+                return true;
+            } catch (error) {
+                console.error('检查登录状态失败:', error);
+                return false;
+            }
+        }
+        
+        // 加载分类
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}/categories`);
+                const data = await response.json();
+                
+                if (data.success && data.categories) {
+                    const categorySelect = document.getElementById('category_id');
+                    if (categorySelect) {
+                        let options = '<option value="">请选择分类</option>';
+                        data.categories.forEach(category => {
+                            options += `<option value="${category.id}">${category.name}</option>`;
+                        });
+                        categorySelect.innerHTML = options;
+                    }
+                }
+            } catch (error) {
+                console.error('加载分类失败:', error);
+                showNotification('加载分类失败，请刷新页面', 'error');
+            }
+        }
+        
+        // 检查编辑模式
+        function checkEditMode() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const instrumentId = urlParams.get('edit');
+            
+            if (instrumentId) {
+                // 编辑模式，加载乐器数据
+                loadInstrumentForEdit(instrumentId);
+                
+                // 修改页面标题
+                document.querySelector('.publish-header h1').textContent = '编辑乐器信息';
+                document.querySelector('.publish-header p').textContent = '修改乐器信息并保存';
+                document.getElementById('submitText').textContent = '更新乐器';
+            }
+        }
+        
+        // 加载要编辑的乐器
+        async function loadInstrumentForEdit(instrumentId) {
+            try {
+                showLoadingMessage('正在加载乐器信息...');
+                
+                const response = await fetch(`${CONFIG.API_BASE}/instruments/${instrumentId}`);
+                const data = await response.json();
+                
+                if (data.success && data.instrument) {
+                    populateForm(data.instrument);
+                    hideLoadingMessage();
+                } else {
+                    showNotification('加载乐器信息失败', 'error');
+                    setTimeout(() => window.location.href = 'user.html', 2000);
+                }
+            } catch (error) {
+                console.error('加载乐器信息失败:', error);
+                showNotification('网络错误，请重试', 'error');
+                hideLoadingMessage();
+            }
+        }
+        
+        // 填充表单数据
+        function populateForm(instrument) {
+            // 基本信息
+            document.getElementById('title').value = instrument.title || '';
+            document.getElementById('category_id').value = instrument.category_id || '';
+            document.getElementById('description').value = instrument.description || '';
+            
+            // 价格信息
+            document.getElementById('price').value = instrument.price || '';
+            document.getElementById('original_price').value = instrument.original_price || '';
+            
+            // 乐器详情
+            document.getElementById('brand').value = instrument.brand || '';
+            document.getElementById('model').value = instrument.model || '';
+            
+            // 设置成色
+            if (instrument.condition) {
+                const radioLabel = document.querySelector(`.radio-label[data-value="${instrument.condition}"]`);
+                if (radioLabel) {
+                    radioLabel.click();
+                }
+            }
+            
+            // 交易信息
+            document.getElementById('location').value = instrument.location || '';
+            
+            // 设置图片
+            if (instrument.images && instrument.images.length > 0) {
+                // 模拟已上传的图片
+                instrument.images.forEach((img, index) => {
+                    const imageData = {
+                        url: img.full_url,
+                        isMain: img.is_main || false
+                    };
+                    uploadedImages.push(imageData);
+                    
+                    if (img.is_main) {
+                        mainImageIndex = index;
+                        document.getElementById('main_image_index').value = index;
+                    }
+                });
+                renderImagePreview();
+            }
+            
+            // 设置音频
+            if (instrument.audio_url) {
+                const audioPreview = document.getElementById('audioPreview');
+                const audioPlayer = document.getElementById('audioPlayer');
+                
+                if (audioPreview && audioPlayer) {
+                    audioPreview.classList.add('active');
+                    audioPlayer.src = instrument.audio_url;
+                    uploadedAudio = { url: instrument.audio_url };
+                }
+            }
+            
+            // 更新计数器
+            updateCounters();
+        }
+        
+        // 显示加载消息
+        function showLoadingMessage(message) {
+            const form = document.getElementById('publishForm');
+            if (form) {
+                form.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <p>${message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        // 隐藏加载消息
+        function hideLoadingMessage() {
+            // 页面初始化时会重新加载表单，所以这里不需要做特别处理
+        }
+        
+        // 显示错误信息
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+        
+        // 绑定事件
+        function bindEvents() {
+            // 输入框计数器
+            setupCounters();
+            
+            // 图片上传区域
+            setupImageUpload();
+            
+            // 音频上传
+            setupAudioUpload();
+            
+            // 条件选择
+            setupConditionSelect();
+            
+            // 表单提交
+            setupFormSubmit();
+            
+            // 移动端菜单
+            setupMobileMenu();
+        }
+        
+        // 设置计数器
+        function setupCounters() {
+            const counters = [
+                { id: 'title', max: 100 },
+                { id: 'description', max: 2000 },
+                { id: 'brand', max: 50 },
+                { id: 'model', max: 50 },
+                { id: 'location', max: 200 }
+            ];
+            
+            counters.forEach(counter => {
+                const input = document.getElementById(counter.id);
+                const counterElement = document.getElementById(counter.id + 'Counter');
+                
+                if (input && counterElement) {
+                    // 初始计数
+                    updateCounter(input, counterElement, counter.max);
+                    
+                    // 输入时计数
+                    input.addEventListener('input', () => {
+                        updateCounter(input, counterElement, counter.max);
+                    });
+                }
+            });
+        }
+        
+        // 更新计数器
+        function updateCounter(input, counterElement, max) {
+            const length = input.value.length;
+            counterElement.textContent = `${length}/${max}`;
+            
+            if (length > max * 0.9) {
+                counterElement.style.color = '#e74c3c';
+            } else if (length > max * 0.7) {
+                counterElement.style.color = '#f39c12';
+            } else {
+                counterElement.style.color = '#999';
+            }
+        }
+        
+        // 更新所有计数器
+        function updateCounters() {
+            const counters = [
+                { id: 'title', max: 100 },
+                { id: 'description', max: 2000 },
+                { id: 'brand', max: 50 },
+                { id: 'model', max: 50 },
+                { id: 'location', max: 200 }
+            ];
+            
+            counters.forEach(counter => {
+                const input = document.getElementById(counter.id);
+                const counterElement = document.getElementById(counter.id + 'Counter');
+                
+                if (input && counterElement) {
+                    updateCounter(input, counterElement, counter.max);
+                }
+            });
+        }
+        
+        // 设置图片上传
+        function setupImageUpload() {
+            const uploadArea = document.getElementById('uploadArea');
+            const imageInput = document.getElementById('images');
+            
+            if (!uploadArea || !imageInput) return;
+            
+            // 点击上传
+            uploadArea.addEventListener('click', function() {
+                imageInput.click();
+            });
+            
+            // 拖拽上传
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                this.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length > 0) {
+                    handleImageUpload(e.dataTransfer.files);
+                }
+            });
+            
+            // 文件选择
+            imageInput.addEventListener('change', function(e) {
+                if (this.files.length > 0) {
+                    handleImageUpload(this.files);
+                }
+            });
+        }
+        
+        // 处理图片上传
+        function handleImageUpload(files) {
+            const maxFiles = 10;
+            const maxSize = 5 * 1024 * 1024; // 5MB
+            const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            
+            // 检查文件数量
+            if (uploadedImages.length + files.length > maxFiles) {
+                showError('imagesError', `最多只能上传${maxFiles}张图片`);
+                return;
+            }
+            
+            // 检查文件类型和大小
+            for (let file of files) {
+                if (!allowedTypes.includes(file.type)) {
+                    showError('imagesError', '仅支持JPG、PNG、GIF格式的图片');
+                    return;
+                }
+                
+                if (file.size > maxSize) {
+                    showError('imagesError', '图片大小不能超过5MB');
+                    return;
+                }
+            }
+            
+            // 预览图片
+            const imagePreview = document.getElementById('imagePreview');
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = '预览图片';
+                    
+                    const previewActions = document.createElement('div');
+                    previewActions.className = 'preview-actions';
+                    
+                    const setMainBtn = document.createElement('button');
+                    setMainBtn.className = 'preview-btn';
+                    setMainBtn.innerHTML = '<i class="fas fa-check"></i>';
+                    setMainBtn.title = '设为主图';
+                    setMainBtn.onclick = function() {
+                        // 移除其他主图标记
+                        document.querySelectorAll('.main-badge').forEach(badge => badge.remove());
+                        // 添加主图标记
+                        const mainBadge = document.createElement('div');
+                        mainBadge.className = 'main-badge';
+                        mainBadge.textContent = '主图';
+                        previewItem.appendChild(mainBadge);
+                        // 更新主图索引
+                        document.getElementById('main_image_index').value = Array.from(imagePreview.children).indexOf(previewItem);
+                    };
+                    
+                    const removeBtn = document.createElement('button');
+                    removeBtn.className = 'preview-btn';
+                    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    removeBtn.title = '删除图片';
+                    removeBtn.onclick = function() {
+                        previewItem.remove();
+                        uploadedImages.splice(uploadedImages.indexOf(file), 1);
+                        // 更新主图索引
+                        const mainBadge = document.querySelector('.main-badge');
+                        if (mainBadge) {
+                            const mainIndex = Array.from(imagePreview.children).indexOf(mainBadge.parentElement);
+                            document.getElementById('main_image_index').value = mainIndex;
+                        }
+                    };
+                    
+                    previewActions.appendChild(setMainBtn);
+                    previewActions.appendChild(removeBtn);
+                    
+                    previewItem.appendChild(img);
+                    previewItem.appendChild(previewActions);
+                    
+                    // 如果是第一张图片，自动设为主图
+                    if (uploadedImages.length === 0) {
+                        const mainBadge = document.createElement('div');
+                        mainBadge.className = 'main-badge';
+                        mainBadge.textContent = '主图';
+                        previewItem.appendChild(mainBadge);
+                        document.getElementById('main_image_index').value = 0;
+                    }
+                    
+                    imagePreview.appendChild(previewItem);
+                };
+                
+                reader.readAsDataURL(file);
+                uploadedImages.push(file);
+            }
+            
+            // 清除错误提示
+            document.getElementById('imagesError').textContent = '';
+        }

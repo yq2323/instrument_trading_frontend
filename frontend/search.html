@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索 - 校园二手乐器交易平台</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-guitar"></i>
+                <span>校园乐器汇</span>
+            </a>
+            
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索乐器...">
+                <button id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <div class="nav-menu">
+                <a href="index.html">
+                    <i class="fas fa-home"></i> 首页
+                </a>
+                <a href="publish.html">
+                    <i class="fas fa-plus-circle"></i> 发布乐器
+                </a>
+                <a href="cart.html" id="cartLink">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span> 购物车
+                </a>
+                
+                <div class="user-dropdown">
+                    <button class="user-btn" id="userBtn">
+                        <i class="fas fa-user"></i>
+                        <span id="username">未登录</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="userMenu">
+                        <a href="user.html">
+                            <i class="fas fa-user-circle"></i> 个人中心
+                        </a>
+                        <a href="user.html#favorites">
+                            <i class="fas fa-heart"></i> 我的收藏
+                        </a>
+                        <div class="divider"></div>
+                        <a href="#" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> 退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.html" class="btn btn-outline">登录</a>
+                    <a href="register.html" class="btn btn-primary">注册</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 搜索页面 -->
+    <main class="search-container">
+        <div class="container">
+            <!-- 搜索框 -->
+            <div class="search-section">
+                <h1>搜索乐器</h1>
+                <div class="search-box-lg">
+                    <input type="text" id="mainSearchInput" placeholder="输入乐器名称、品牌或型号...">
+                    <button id="mainSearchBtn">
+                        <i class="fas fa-search"></i> 搜索
+                    </button>
+                </div>
+                
+                <!-- 搜索建议 -->
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+
+            <!-- 筛选器 -->
+            <div class="search-filters">
+                <div class="filter-section">
+                    <h3>筛选条件</h3>
+                    
+                    <div class="filter-group">
+                        <label>分类</label>
+                        <select id="categoryFilter" class="form-select">
+                            <option value="">所有分类</option>
+                            <!-- 分类将通过JS动态加载 -->
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>价格范围</label>
+                        <div class="price-range">
+                            <input type="number" id="minPrice" placeholder="最低价">
+                            <span>至</span>
+                            <input type="number" id="maxPrice" placeholder="最高价">
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>成色</label>
+                        <div class="condition-buttons">
+                            <button class="condition-btn" data-condition="">全部</button>
+                            <button class="condition-btn" data-condition="new">全新</button>
+                            <button class="condition-btn" data-condition="like_new">几乎全新</button>
+                            <button class="condition-btn" data-condition="good">良好</button>
+                            <button class="condition-btn" data-condition="fair">一般</button>
+                            <button class="condition-btn" data-condition="poor">较差</button>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>排序方式</label>
+                        <select id="sortFilter" class="form-select">
+                            <option value="created_at:desc">最新发布</option>
+                            <option value="price:asc">价格从低到高</option>
+                            <option value="price:desc">价格从高到低</option>
+                            <option value="view_count:desc">最受欢迎</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn btn-primary" id="applyFiltersBtn">应用筛选</button>
+                    <button class="btn btn-outline" id="resetFiltersBtn">重置筛选</button>
+                </div>
+            </div>
+
+            <!-- 搜索结果 -->
+            <div class="search-results">
+                <div class="results-header">
+                    <h2 id="resultsTitle">搜索结果</h2>
+                    <span id="resultsCount">0个结果</span>
+                </div>
+                
+                <div class="instruments-grid" id="searchResultsGrid">
+                    <!-- 搜索结果将通过JS动态加载 -->
+                </div>
+                
+                <!-- 分页 -->
+                <div class="pagination" id="searchPagination">
+                    <button id="prevPage" class="page-btn" disabled>
+                        <i class="fas fa-chevron-left"></i> 上一页
+                    </button>
+                    <div class="page-numbers" id="pageNumbers"></div>
+                    <button id="nextPage" class="page-btn">
+                        下一页 <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 没有结果 -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <i class="fas fa-search"></i>
+                <h3>没有找到相关乐器</h3>
+                <p>尝试其他关键词或调整筛选条件</p>
+                <a href="index.html" class="btn btn-primary">返回首页</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>校园乐器汇</h3>
+                    <p>专注于校园二手乐器交易，让音乐传递更远</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="publish.html">发布乐器</a></li>
+                        <li><a href="search.html">搜索乐器</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <p>课程项目 - 软件工程</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/search.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化搜索页面
+            initSearchPage();
+        });
+    </script>
+</body>
+</html>

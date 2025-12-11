@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校园二手乐器交易平台</title>
+    
+    <!-- CSS样式 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    
+    <style>
+        /* 主页特有样式 */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero-content p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .features-section {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .how-it-works {
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .steps {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .step {
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+        }
+        
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 auto 20px;
+        }
+        
+        .step h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .step p {
+            color: #666;
+        }
+        
+        .testimonials {
+            padding: 80px 0;
+            background-color: #f8f9fa;
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .author-info p {
+            margin: 5px 0 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .cta-content h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .cta-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 36px;
+            }
+            
+            .hero-content p {
+                font-size: 18px;
+            }
+            
+            .steps {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .step {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <!-- Logo -->
+            <a href="index.html" class="logo">
+                <i class="fas fa-guitar"></i>
+                <span>校园乐器汇</span>
+            </a>
+            
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索乐器...">
+                <button id="searchBtn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            
+            <!-- 导航菜单 -->
+            <div class="nav-menu">
+                <a href="index.html" class="active">
+                    <i class="fas fa-home"></i> 首页
+                </a>
+                <a href="publish.html">
+                    <i class="fas fa-plus-circle"></i> 发布乐器
+                </a>
+                <a href="cart.html" id="cartLink">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span> 购物车
+                </a>
+                <a href="search.html">
+                    <i class="fas fa-search"></i> 搜索
+                </a>
+                
+                <!-- 用户相关 -->
+                <div class="user-dropdown">
+                    <button class="user-btn" id="userBtn">
+                        <i class="fas fa-user"></i>
+                        <span id="username">未登录</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="userMenu">
+                        <a href="user.html">
+                            <i class="fas fa-user-circle"></i> 个人中心
+                        </a>
+                        <a href="user.html#favorites">
+                            <i class="fas fa-heart"></i> 我的收藏
+                        </a>
+                        <a href="user.html#my-instruments">
+                            <i class="fas fa-music"></i> 我的发布
+                        </a>
+                        <div class="divider"></div>
+                        <a href="#" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> 退出登录
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 登录/注册按钮 -->
+                <div class="auth-buttons" id="authButtons">
+                    <a href="login.html" class="btn btn-outline">登录</a>
+                    <a href="register.html" class="btn btn-primary">注册</a>
+                </div>
+            </div>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="close-menu" id="closeMenu">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="mobile-nav">
+            <a href="index.html"><i class="fas fa-home"></i> 首页</a>
+            <a href="publish.html"><i class="fas fa-plus-circle"></i> 发布乐器</a>
+            <a href="cart.html"><i class="fas fa-shopping-cart"></i> 购物车</a>
+            <a href="search.html"><i class="fas fa-search"></i> 搜索</a>
+            <a href="user.html"><i class="fas fa-user"></i> 个人中心</a>
+            <div class="divider"></div>
+            <a href="login.html" class="btn btn-outline">登录</a>
+            <a href="register.html" class="btn btn-primary">注册</a>
+        </div>
+    </div>
+
+    <!-- 应用容器 -->
+    <div id="app-container">
+        
+        <!-- 首页内容 -->
+        <div id="home-page" class="page-content active">
+            <main>
+        <!-- 英雄区域 -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>让闲置的乐器找到新主人</h1>
+                    <p>专为校园设计的二手乐器交易平台，安全、便捷、值得信赖</p>
+                    <div class="hero-buttons">
+                        <a href="publish.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus-circle"></i> 发布乐器
+                        </a>
+                        <a href="search.html" class="btn btn-outline btn-lg" style="background: rgba(255,255,255,0.1); color: white; border-color: white;">
+                            <i class="fas fa-search"></i> 浏览乐器
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 分类展示 -->
+        <section class="categories-section">
+            <div class="container">
+                <h2 class="section-title">🎵 乐器分类</h2>
+                <div class="categories-grid" id="categoriesGrid">
+                    <!-- 分类将通过JS动态加载 -->
+                    <div class="loading">加载中...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 热门推荐 -->
+        <section class="hot-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">🔥 热门推荐</h2>
+                    <a href="search.html" class="see-more">查看更多 ></a>
+                </div>
+                <div class="instruments-grid" id="hotInstruments">
+                    <!-- 热门乐器将通过JS动态加载 -->
+                    <div class="loading">加载中...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 特色功能 -->
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title">✨ 平台特色</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>安全保障</h3>
+                        <p>实名认证 + 信用评分系统，确保每一笔交易安全可靠</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <h3>音频试听</h3>
+                        <p>支持上传乐器演奏音频，试听满意再购买，避免踩坑</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <h3>同校交易</h3>
+                        <p>优先匹配同校用户，支持线下当面交易，更安全放心</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3>在线沟通</h3>
+                        <p>内置聊天系统，方便买卖双方随时沟通，提高交易效率</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 使用流程 -->
+        <section class="how-it-works">
+            <div class="container">
+                <h2 class="section-title">🚀 使用流程</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h4>注册账号</h4>
+                        <p>使用学校邮箱快速注册，完成实名认证</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h4>发布乐器</h4>
+                        <p>上传乐器信息、图片和试听音频</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h4>等待交易</h4>
+                        <p>买家浏览下单，双方沟通交易细节</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h4>完成交易</h4>
+                        <p>线下当面交易，确认后完成订单</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 最新发布 -->
+        <section class="latest-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">📢 最新发布</h2>
+                    <a href="search.html" class="see-more">查看更多 ></a>
+                </div>
+                <div class="instruments-grid" id="latestInstruments">
+                    <!-- 最新乐器将通过JS动态加载 -->
+                    <div class="loading">加载中...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 用户评价 -->
+        <section class="testimonials">
+            <div class="container">
+                <h2 class="section-title">💬 用户评价</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"在这个平台卖掉了我的旧吉他，整个过程很顺利，买家是同校的同学，见面交易很方便。"</p>
+                        <div class="testimonial-author">
+                            <img src="images/user1.jpg" alt="用户头像" onerror="this.src='images/default-avatar.svg'">
+                            <div class="author-info">
+                                <h4>张三</h4>
+                                <p>音乐学院学生</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"买到了心仪的小提琴，价格比市场价便宜很多，卖家还提供了试听音频，很贴心。"</p>
+                        <div class="testimonial-author">
+                            <img src="images/user2.jpg" alt="用户头像" onerror="this.src='images/default-avatar.svg'">
+                            <div class="author-info">
+                                <h4>李四</h4>
+                                <p>艺术系学生</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <p class="testimonial-text">"平台操作简单，信用系统让人放心，已经成功交易了3次，推荐给身边的朋友。"</p>
+                        <div class="testimonial-author">
+                            <img src="images/user3.jpg" alt="用户头像" onerror="this.src='images/default-avatar.svg'">
+                            <div class="author-info">
+                                <h4>王五</h4>
+                                <p>管乐团成员</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 行动召唤 -->
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>立即加入，开启你的乐器交易之旅</h2>
+                    <p>无论你是想出售闲置乐器，还是寻找心仪的乐器，这里都是最好的选择</p>
+                    <div class="hero-buttons">
+                        <a href="register.html" class="btn btn-primary btn-lg" style="background: white; color: #667eea;">
+                            立即注册
+                        </a>
+                        <a href="search.html" class="btn btn-outline btn-lg" style="border-color: white; color: white;">
+                            浏览乐器
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+            </main>
+        </div>
+        
+        <!-- 登录页面 -->
+        <div id="login-page" class="page-content">
+            <!-- 登录页面内容将通过JavaScript加载 -->
+        </div>
+        
+        <!-- 注册页面 -->
+        <div id="register-page" class="page-content">
+            <!-- 注册页面内容将通过JavaScript加载 -->
+        </div>
+        
+        <!-- 发布页面 -->
+        <div id="publish-page" class="page-content">
+            <!-- 发布页面内容将通过JavaScript加载 -->
+        </div>
+        
+        <!-- 搜索页面 -->
+        <div id="search-page" class="page-content">
+            <!-- 搜索页面内容将通过JavaScript加载 -->
+        </div>
+        
+        <!-- 用户中心页面 -->
+        <div id="user-page" class="page-content">
+            <!-- 用户中心页面内容将通过JavaScript加载 -->
+        </div>
+        
+        <!-- 乐器详情页面 -->
+        <div id="detail-page" class="page-content">
+            <!-- 乐器详情页面内容将通过JavaScript加载 -->
+        </div>
+        
+        <!-- 购物车页面 -->
+        <div id="cart-page" class="page-content">
+            <!-- 购物车页面内容将通过JavaScript加载 -->
+        </div>
+        
+    </div>
+    
+    <!-- 默认页脚 -->
+    <footer id="default-footer" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>校园乐器汇</h3>
+                    <p>专注于校园二手乐器交易，让音乐传递更远</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="publish.html">发布乐器</a></li>
+                        <li><a href="search.html">搜索乐器</a></li>
+                        <li><a href="user.html">个人中心</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>帮助中心</h4>
+                    <ul>
+                        <li><a href="#">新手指南</a></li>
+                        <li><a href="#">交易规则</a></li>
+                        <li><a href="#">常见问题</a></li>
+                        <li><a href="#">联系我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>联系我们</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 123-4567-8900</li>
+                        <li><i class="fas fa-envelope"></i> support@instrument.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> XX大学大学生活动中心</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 校园乐器汇. All Rights Reserved.</p>
+                <p>课程项目 - 软件工程</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript文件 -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/instrument.js"></script>
+    
+    <script>
+        // 首页特有功能
+        async function loadLatestInstruments() {
+            const latestInstruments = document.getElementById('latestInstruments');
+            if (!latestInstruments) return;
+            
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}/instruments?page_size=8&sort_by=created_at&sort_order=desc`);
+                const data = await response.json();
+                
+                if (data.success && data.instruments) {
+                    latestInstruments.innerHTML = data.instruments.map(instrument => `
+                        <div class="instrument-card" onclick="window.location.href='detail.html?id=${instrument.id}'">
+                            <div class="instrument-image">
+                                <img src="${instrument.main_image || 'images/default-instrument.jpg'}" 
+                                     alt="${instrument.title}"
+                                     onerror="this.src='images/default-instrument.jpg'">
+                                <span class="condition-badge ${instrument.condition}">
+                                    ${getConditionText(instrument.condition)}
+                                </span>
+                            </div>
+                            <div class="instrument-info">
+                                <h3 class="title">${instrument.title}</h3>
+                                <p class="description">${instrument.description ? instrument.description.substring(0, 50) + '...' : '暂无描述'}</p>
+                                <div class="price">${formatPrice(instrument.price)}</div>
+                                <div class="meta">
+                                    <span><i class="fas fa-eye"></i> ${instrument.view_count}</span>
+                                    <span><i class="fas fa-heart"></i> ${instrument.favorite_count}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    latestInstruments.innerHTML = '<p class="no-data">暂无最新发布</p>';
+                }
+            } catch (error) {
+                console.error('加载最新乐器失败:', error);
+                latestInstruments.innerHTML = '<p class="error">加载失败，请刷新重试</p>';
+            }
+        }
+
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查登录状态
+            checkAuthStatus();
+            
+            // 加载首页数据
+            loadCategories();
+            loadHotInstruments();
+            loadLatestInstruments();
+            
+            // 绑定事件
+            bindEvents();
+        });
+
+        function formatPrice(price) {
+            return '¥' + parseFloat(price).toFixed(2);
+        }
+
+        function getConditionText(condition) {
+            const conditions = {
+                'new': '全新',
+                'like_new': '几乎全新',
+                'good': '良好',
+                'fair': '一般',
+                'poor': '较差'
+            };
+            return conditions[condition] || '良好';
+        }
+    </script>
+</body>
+</html>

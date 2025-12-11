@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试API配置</title>
+</head>
+<body>
+    <h1>测试API配置</h1>
+    <div id="results"></div>
+
+    <script>
+        // 检查全局变量
+        console.log('Before config.js - API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'undefined');
+        console.log('Before config.js - CONFIG:', typeof CONFIG !== 'undefined' ? CONFIG : 'undefined');
+        
+        document.getElementById('results').innerHTML += '<p>Before config.js - API_BASE_URL: ' + (typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'undefined') + '</p>';
+        document.getElementById('results').innerHTML += '<p>Before config.js - CONFIG: ' + (typeof CONFIG !== 'undefined' ? JSON.stringify(CONFIG) : 'undefined') + '</p>';
+    </script>
+
+    <script src="js/config.js"></script>
+
+    <script>
+        // 检查CONFIG对象
+        console.log('After config.js - CONFIG:', CONFIG);
+        document.getElementById('results').innerHTML += '<p>After config.js - CONFIG: ' + JSON.stringify(CONFIG) + '</p>';
+    </script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+
+    <script>
+        // 检查所有全局变量
+        console.log('All scripts loaded - API_BASE_URL:', typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'undefined');
+        console.log('All scripts loaded - CONFIG:', CONFIG);
+        
+        document.getElementById('results').innerHTML += '<p>All scripts loaded - API_BASE_URL: ' + (typeof API_BASE_URL !== 'undefined' ? API_BASE_URL : 'undefined') + '</p>';
+        document.getElementById('results').innerHTML += '<p>All scripts loaded - CONFIG: ' + JSON.stringify(CONFIG) + '</p>';
+        
+        // 测试登录API
+        async function testLogin() {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE}/auth/csrf_token`, {
+                    credentials: 'include'
+                });
+                const data = await response.json();
+                console.log('CSRF token:', data);
+                document.getElementById('results').innerHTML += '<p>CSRF token获取成功: ' + data.csrf_token + '</p>';
+            } catch (error) {
+                console.error('测试登录失败:', error);
+                document.getElementById('results').innerHTML += '<p>错误: ' + error.message + '</p>';
+            }
+        }
+        
+        // 运行测试
+        testLogin();
+    </script>
+</body>
+</html>
