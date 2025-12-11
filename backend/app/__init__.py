@@ -27,8 +27,12 @@ def create_app(config_class=Config):
     db.init_app(app)
     login_manager.init_app(app)
     mail.init_app(app)
-    csrf.init_app(app)
-    CORS(app, supports_credentials=True, origins=["http://localhost:8000", "http://127.0.0.1:8000"])
+    
+    # 为API环境配置CORS，允许所有域名访问
+    CORS(app, supports_credentials=True, origins="*")
+    
+    # 在API环境中禁用CSRF保护，避免跨域问题
+    app.config['WTF_CSRF_ENABLED'] = False
     
     # 注册蓝图
     from .auth import auth_bp

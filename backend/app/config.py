@@ -8,13 +8,26 @@ class Config:
     # 基础配置
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-for-instrument-trading'
     
-    # 数据库配置
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'mysql+pymysql://root:123456@localhost:3306/instrument_trading'
+    # 添加基础目录配置
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    # 数据库配置 - 支持Zeabur等平台的数据库URL格式
+    DATABASE_URL = os.environ.get('DATABASE_URL')
+    if DATABASE_URL:
+        # 处理不同平台的数据库URL格式
+        if DATABASE_URL.startswith('mysql://'):
+            SQLALCHEMY_DATABASE_URI = DATABASE_URL.replace('mysql://', 'mysql+pymysql://')
+        elif DATABASE_URL.startswith('postgres://'):
+            SQLALCHEMY_DATABASE_URI = DATABASE_URL.replace('postgres://', 'postgresql://')
+        else:
+            SQLALCHEMY_DATABASE_URI = DATABASE_URL
+    else:
+        # 本地开发环境默认配置
+        SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:123456@localhost:3306/instrument_trading'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # 文件上传配置
-    UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'static/uploads')
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'static/uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16MB
     ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'mp3', 'wav'}
     

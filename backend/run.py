@@ -21,7 +21,12 @@ app = create_app()
 @app.route('/')
 def home():
     """首页"""
-    return '''
+    from flask import render_template_string
+    
+    port = os.environ.get('PORT', 5000)
+    debug = app.config['DEBUG']
+    
+    template = '''
     <!DOCTYPE html>
     <html>
     <head>
@@ -84,8 +89,8 @@ def home():
             
             <div class="status">
                 <strong>状态:</strong> ✅ 运行正常<br>
-                <strong>端口:</strong> 5000<br>
-                <strong>环境:</strong> 开发环境
+                <strong>端口:</strong> {{ port }}<br>
+                <strong>环境:</strong> {{ '开发环境' if debug else '生产环境' }}
             </div>
             
             <div>
@@ -107,6 +112,8 @@ def home():
     </body>
     </html>
     '''
+    
+    return render_template_string(template, port=port, debug=debug)
 
 @app.route('/static/<path:filename>')
 def serve_static(filename):
